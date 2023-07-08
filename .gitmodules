@@ -1,0 +1,3 @@
+[submodule "lib/EloquentEsp32cam"]
+	path = lib/EloquentEsp32cam
+	url = https://github.com/aliffathoni/EloquentEsp32cam.git
