@@ -1,3 +1,6 @@
 [submodule "lib/EloquentEsp32cam"]
 	path = lib/EloquentEsp32cam
 	url = https://github.com/aliffathoni/EloquentEsp32cam.git
+[submodule "tmp"]
+	path = tmp
+	url = https://github.com/Bodmer/TFT_eSPI.git
