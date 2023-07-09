@@ -5,3 +5,6 @@
 [submodule "lib/TFT_eSPI"]
 	path = lib/TFT_eSPI
 	url = https://github.com/Bodmer/TFT_eSPI.git
+[submodule "tmp"]
+	path = tmp
+	url = https://github.com/schreibfaul1/ESP32-audioI2S.git
