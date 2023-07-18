@@ -2,8 +2,6 @@
 #define VISMATE_H_
 
 #include <Arduino.h>
-#include "../device_config.h"
-#include "../camera/object_detection.h"
 
 class visMate {
     public :
@@ -12,7 +10,7 @@ class visMate {
         void init_camera();
         String get_object();
     private :
-        int _pin = DEFAULT_EMG_PIN;
+        int _pin;
 };
 
 #endif // VISMATE_H_
