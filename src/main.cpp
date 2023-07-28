@@ -13,7 +13,9 @@ void setup()
 
     vismate.speaker_test();
     vismate.lcd_test();
+    // vismate.init_i2c();
 }
 
-void loop()
-{}
+void loop(){
+    // vismate.scan_i2c();
+}

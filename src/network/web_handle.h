@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#include "server.h"
+#include "network.h"
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <WebServer.h>
