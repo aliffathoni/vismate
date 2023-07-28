@@ -12,7 +12,7 @@
 #define USER_SETUP_INFO "User_Setup"
 
 // Define to disable all #warnings in library (can be put in User_Setup_Select.h)
-//#define DISABLE_ALL_LIBRARY_WARNINGS
+#define DISABLE_ALL_LIBRARY_WARNINGS
 
 // ##################################################################################
 //
@@ -42,7 +42,7 @@
 //#define RPI_DISPLAY_TYPE // 20MHz maximum SPI
 
 // Only define one driver, the other ones must be commented out
-#define ILI9341_DRIVER       // Generic driver for common displays
+// #define ILI9341_DRIVER       // Generic driver for common displays
 //#define ILI9341_2_DRIVER     // Alternative ILI9341 driver, see https://github.com/Bodmer/TFT_eSPI/issues/1172
 //#define ST7735_DRIVER      // Define additional parameters below for this display
 //#define ILI9163_DRIVER     // Define additional parameters below for this display
@@ -62,7 +62,7 @@
 //#define SSD1963_800_DRIVER
 //#define SSD1963_800ALT_DRIVER
 //#define ILI9225_DRIVER
-//#define GC9A01_DRIVER
+#define GC9A01_DRIVER
 
 // Some displays support SPI reads via the MISO pin, other displays have a single
 // bi-directional SDA pin and the library will try to read this via the MOSI line.
@@ -85,12 +85,12 @@
 // #define TFT_WIDTH  128
 // #define TFT_WIDTH  172 // ST7789 172 x 320
 // #define TFT_WIDTH  170 // ST7789 170 x 320
-// #define TFT_WIDTH  240 // ST7789 240 x 240 and 240 x 320
+#define TFT_WIDTH  240 // ST7789 240 x 240 and 240 x 320
 // #define TFT_HEIGHT 160
 // #define TFT_HEIGHT 128
 // #define TFT_HEIGHT 240 // ST7789 240 x 240
 // #define TFT_HEIGHT 320 // ST7789 240 x 320
-// #define TFT_HEIGHT 240 // GC9A01 240 x 240
+#define TFT_HEIGHT 240 // GC9A01 240 x 240
 
 // For ST7735 ONLY, define the type of display, originally this was based on the
 // colour of the tab on the screen protector film but this is not always true, so try
@@ -167,13 +167,13 @@
 // ###### EDIT THE PIN NUMBERS IN THE LINES FOLLOWING TO SUIT YOUR ESP8266 SETUP ######
 
 // For NodeMCU - use pin numbers in the form PIN_Dx where Dx is the NodeMCU pin designation
-#define TFT_MISO  PIN_D6  // Automatically assigned with ESP8266 if not defined
-#define TFT_MOSI  PIN_D7  // Automatically assigned with ESP8266 if not defined
-#define TFT_SCLK  PIN_D5  // Automatically assigned with ESP8266 if not defined
+// #define TFT_MISO  PIN_D6  // Automatically assigned with ESP8266 if not defined
+// #define TFT_MOSI  PIN_D7  // Automatically assigned with ESP8266 if not defined
+// #define TFT_SCLK  PIN_D5  // Automatically assigned with ESP8266 if not defined
 
-#define TFT_CS    PIN_D8  // Chip select control pin D8
-#define TFT_DC    PIN_D3  // Data Command control pin
-#define TFT_RST   PIN_D4  // Reset pin (could connect to NodeMCU RST, see next line)
+// #define TFT_CS    PIN_D8  // Chip select control pin D8
+// #define TFT_DC    PIN_D3  // Data Command control pin
+// #define TFT_RST   PIN_D4  // Reset pin (could connect to NodeMCU RST, see next line)
 //#define TFT_RST  -1     // Set TFT_RST to -1 if the display RESET is connected to NodeMCU RST or 3.3V
 
 
@@ -220,12 +220,13 @@
 // For ESP32 Dev board (only tested with GC9A01 display)
 // The hardware SPI can be mapped to any pins
 
-//#define TFT_MOSI 15 // In some display driver board, it might be written as "SDA" and so on.
-//#define TFT_SCLK 14
-//#define TFT_CS   5  // Chip select control pin
-//#define TFT_DC   27  // Data Command control pin
-//#define TFT_RST  33  // Reset pin (could connect to Arduino RESET pin)
-//#define TFT_BL   22  // LED back-light
+#define TFT_MISO -1
+#define TFT_MOSI 15  // In some display driver board, it might be written as "SDA" and so on.
+#define TFT_SCLK 7
+#define TFT_CS   18  // Chip select control pin
+#define TFT_DC   17  // Data Command control pin
+#define TFT_RST  16  // Reset pin (could connect to Arduino RESET pin)
+#define TFT_BL   8   // LED back-light
 
 //#define TOUCH_CS 21     // Chip select pin (T_CS) of touch screen
 

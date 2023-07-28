@@ -1,6 +1,8 @@
 #include <Arduino.h>
 
-#include "server.h"
+#include "credentials.h"
+#include "ip_handle.h"
+#include "web_handle.h"
 
 void reset_credentials(){
     reset();

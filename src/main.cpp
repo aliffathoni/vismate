@@ -1,8 +1,6 @@
 #include <Arduino.h>
 #include "system/vismate.h"
 
-visMate vis;
-
 void setup()
 {
     Serial.begin(115200);
@@ -11,10 +9,11 @@ void setup()
     Serial.print("PSRAM Size ");
     Serial.println(psram_size);
 
-    vis.init_camera();
+    delay(1000);
+
+    vismate.speaker_test();
+    vismate.lcd_test();
 }
 
 void loop()
-{
-    vis.get_object();
-}
+{}

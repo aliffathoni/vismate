@@ -3,11 +3,6 @@
 
 #include <Arduino.h>
 
-// credentials
-void load(void);
-void reset(void);
-void write(String ssid, String password);
-
 // ip
 boolean isIp(String str);
 String toStringIp(IPAddress ip);

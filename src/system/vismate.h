@@ -3,14 +3,16 @@
 
 #include <Arduino.h>
 
-class visMate {
+class VisMateClass {
     public :
-        visMate();
-        visMate(uint8_t pin);
-        void init_camera();
-        String get_object();
+        VisMateClass();
+        void speaker_test();
+        void lcd_test();
+
     private :
         int _pin;
 };
+
+extern VisMateClass vismate;
 
 #endif // VISMATE_H_
