@@ -6,6 +6,7 @@
 #include <TFT_eSPI.h> // Hardware-specific library
 #include <SPI.h>
 
+#include "../device_config.h"
 #include "Image.h"
 
 // typedef void (*CallBacFunc) (Menu_State_t);
@@ -21,7 +22,7 @@ class LCDClass {
     public:
         LCDClass(void);
         void init_tft(void);
-        void menu(int menu, int y_pos);
+        void menu(Menu_screen_t screen, int y_pos);
         // void moveTo(int menu, int y_pos);
         // void backTo(int menu, int y_pos);
         void rotate(int rotation_state);
