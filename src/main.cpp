@@ -2,8 +2,6 @@
 #include "system/vismate.h"
 #include "device_config.h"
 
-int last_pos = 0;
-
 void setup()
 {
     Serial.begin(115200);
@@ -33,16 +31,25 @@ void loop(){
             vismate.screen(NAVIGATION);
             break;
         case NAVIGATION:
-            vismate.screen(SPEECH);
+            vismate.screen(SPEAK);
             break;
-        case SPEECH:
+        case SPEAK:
             vismate.screen(NOTES);
             break;
         case NOTES:
             vismate.screen(HOME_SCREEN);
             break;
+        case HOME_MAPS:
+            vismate.screen(MAPS);
+            break;
+        case SHOW_MAPS:
+            vismate.screen(MAPS);
+            break;
+        case LOADING:
+            vismate.screen(NOTES);
+            break;
         default:
-            vismate.screen(HOME_SCREEN);
+            vismate.screen(vismate.get_last_screen());
             break;
       }
 
@@ -60,17 +67,26 @@ void loop(){
         case NAVIGATION:
             vismate.screen(MAPS);
             break;
-        case SPEECH:
+        case SPEAK:
             vismate.screen(NAVIGATION);
             break;
         case NOTES:
-            vismate.screen(SPEECH);
+            vismate.screen(SPEAK);
             break;
         case HOME_SCREEN:
             vismate.screen(NOTES);
             break;
+        case HOME_MAPS:
+            vismate.screen(MAPS);
+            break;
+        case SHOW_MAPS:
+            vismate.screen(MAPS);
+            break;
+        case LOADING:
+            vismate.screen(NOTES);
+            break;
         default:
-            vismate.screen(HOME_SCREEN);
+            vismate.screen(vismate.get_last_screen());
             break;
       }
 
@@ -78,8 +94,30 @@ void loop(){
     }
 
     if(!digitalRead(9)){
-      vismate.screen(vismate.get_screen());
-      
-      vTaskDelay(200 / portTICK_PERIOD_MS);
+        switch (vismate.get_screen()){
+            case MAPS:
+                vismate.screen(HOME_MAPS);
+                break;
+            case HOME_MAPS:
+                vismate.screen(SHOW_MAPS);
+                break;
+            case SHOW_MAPS:
+                vismate.screen(MAPS);
+                break;
+            case NOTES:
+                vismate.screen(LISTENING);
+                break;
+            case LISTENING:
+                vismate.screen(LOADING);
+                break;
+            case LOADING:
+                vismate.screen(NOTES);
+                break;
+            default:
+                vismate.screen(vismate.get_last_screen());
+                break;
+        }
+        
+        vTaskDelay(200 / portTICK_PERIOD_MS);
     }
 }

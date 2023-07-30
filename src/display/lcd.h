@@ -7,7 +7,10 @@
 #include <SPI.h>
 
 #include "../device_config.h"
-#include "Image.h"
+#include "image.h"
+#include "listening.h"
+#include "loading.h"
+#include "ub.h"
 
 // typedef void (*CallBacFunc) (Menu_State_t);
 
@@ -16,6 +19,7 @@ class LCDClass {
         TFT_eSPI tft = TFT_eSPI();
         TFT_eSprite bgSprite = TFT_eSprite(&tft);
         TFT_eSprite iconSprite = TFT_eSprite(&tft);
+        TFT_eSprite textSprite = TFT_eSprite(&tft);
 
         int _rotation_state;
     
@@ -29,6 +33,8 @@ class LCDClass {
         void boot();
         // void connect(bool connection_status);
         // void showServer();
+        void set_rotation(uint8_t rotation);
+        uint8_t get_rotation();
 };
 
 extern LCDClass lcd;

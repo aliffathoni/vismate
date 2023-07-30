@@ -11,6 +11,7 @@
 class VoiceClass{
   public:
     void init(void);
+    void change_volume(uint8_t volume);
     void speak(const char *buff);
   
   private:

@@ -8,6 +8,10 @@ void VoiceClass::init(){
   audio.setVolume(21); //Volume min = 0, max = 21
 }
 
+void VoiceClass::change_volume(uint8_t volume){
+  audio.setVolume(volume);
+}
+
 void VoiceClass::speak(const char *buff){
   audio.connecttospeech(buff, "en");                      //Mengubah data digital suara ke analog
   neopixelWrite(RGB_BUILTIN,0,0,RGB_BRIGHTNESS); // Blue

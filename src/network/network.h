@@ -11,7 +11,11 @@ class NetworkClass {
 
   public:
     NetworkClass(void);
-    bool begin();
+    String get_ssid();
+    String get_ip();
+    void set_credentials(const char *ssid, const char *pass);
+    bool get_net_status();
+    void begin();
 };
 
 extern NetworkClass net;
