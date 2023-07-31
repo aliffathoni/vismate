@@ -12,6 +12,8 @@ void setup()
 
     delay(1000);
     vismate.setup_control();
+    vismate.init_i2c();
+    vismate.scan_i2c();
     vismate.lcd_test();
     vismate.speaker_test();
     delay(1000);

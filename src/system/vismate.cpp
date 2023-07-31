@@ -27,7 +27,7 @@ void VisMateClass::setup_control(uint8_t up_pin, uint8_t mid_pin, uint8_t down_p
 }
 
 void VisMateClass::init_connection(){
-    net.set_credentials("Kara VIP", "icecoffeeshaken");
+    net.set_credentials("R3", "01062003");
 
     Serial.print("Connecting to ");
     Serial.println(net.get_ssid());
@@ -55,14 +55,14 @@ void VisMateClass::speaker_test(){
 }
 
 void VisMateClass::init_i2c(){
-    Wire.begin(12, 11);
+    Wire.begin(11, 12);
 }
 
 void VisMateClass::scan_i2c(){
     byte error, address;
     int nDevices = 0;
 
-    delay(5000);
+    delay(1000);
 
     Serial.println("Scanning for I2C devices ...");
     for(address = 0x01; address < 0x7f; address++){
