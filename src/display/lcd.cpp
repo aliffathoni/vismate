@@ -11,10 +11,25 @@ void LCDClass::init_tft(){
     tft.init();
     tft.setRotation(3);
     tft.fillScreen(TFT_WHITE);
-    tft.setFreeFont(&FreeSans12pt7b);
+    // tft.setFreeFont(&FreeSans18pt7b);
     tft.setTextDatum(CC_DATUM);
     tft.setTextColor(TFT_BLACK, TFT_WHITE);
-    tft.drawString("Loading", 120, 120);
+    tft.drawString("Loading123", 120, 120, 1);
+    delay(1000);
+    tft.fillScreen(TFT_WHITE);
+    tft.drawString("Loading123", 120, 120, 3);
+    delay(1000);
+    tft.fillScreen(TFT_WHITE);
+    tft.drawString("Loading123", 120, 120, 4);
+    delay(1000);
+    tft.fillScreen(TFT_WHITE);
+    tft.drawString("Loading123", 120, 120, 5);
+    delay(1000);
+    tft.fillScreen(TFT_WHITE);
+    tft.drawString("Loading123", 120, 120, 6);
+    delay(1000);
+    tft.fillScreen(TFT_WHITE);
+    tft.drawString("Loading123", 120, 120, 7);
 
     bgSprite.createSprite(240, 240);
     bgSprite.setSwapBytes(true);
@@ -57,10 +72,10 @@ void LCDClass::menu(Menu_screen_t screen, int y_pos){
             bgSprite.pushImage(0, 0, 230, 230, Home);
 
             textSprite.fillSprite(TFT_WHITE);
-            textSprite.setFreeFont(&FreeSans24pt7b);
+            // textSprite.setFreeFont(&FreeSans24pt7b);
             textSprite.setTextDatum(TR_DATUM);
             textSprite.setTextColor(TFT_BLACK, TFT_WHITE);
-            textSprite.drawString("12:34", 200, 50);
+            textSprite.drawString("88:88", 205, 35, 7);
             
             textSprite.setFreeFont(&FreeSans12pt7b);
             textSprite.setTextDatum(TR_DATUM);
