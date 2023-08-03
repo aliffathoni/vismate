@@ -3,19 +3,48 @@
 
 #include <Arduino.h>
 #include <WiFi.h>
+#include <FirebaseESP32.h>
+#include <DNSServer.h>
+#include <AsyncTCP.h>
+#include <NTPClient.h>
+#include <WiFiUdp.h>
+#include "ESPAsyncWebServer.h"
+#include "credentials.h"
+#include "../device_config.h"
+#include "web_handle.h"
 
-class NetworkClass {
-  private:
-    const char *_net_ssid = "3DPractical";
-    const char *_net_pass = "embeddedelectronics";
+#define TAG "Network"
 
+class CaptiveRequestHandler : public AsyncWebHandler {
+public:
+  CaptiveRequestHandler() {}
+  virtual ~CaptiveRequestHandler() {}
+
+  bool canHandle(AsyncWebServerRequest *request){
+    //request->addInterestingHeader("ANY");
+    return true;
+  }
+
+  void handleRequest(AsyncWebServerRequest *request) {
+    request->send_P(200, "text/html", index_html); 
+  }
+};
+
+class NetworkClass{
   public:
     NetworkClass(void);
+    void setupServer();
+    void connect(String ssid, String pass);
+    bool get_status();
+    void begin();
+    void reconnect(String ap_name);
     String get_ssid();
     String get_ip();
-    void set_credentials(const char *ssid, const char *pass);
-    bool get_net_status();
-    void begin();
+
+  private:
+    bool _connection_status = false;
+    String ssid, pass;
+    String ssid_ap = DEFAULT_DEVICE_NAME;
 };
 
 extern NetworkClass net;

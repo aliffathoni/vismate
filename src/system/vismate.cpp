@@ -27,12 +27,8 @@ void VisMateClass::setup_control(uint8_t up_pin, uint8_t mid_pin, uint8_t down_p
 }
 
 void VisMateClass::init_connection(){
-    net.set_credentials("R3", "01062003");
-
-    Serial.print("Connecting to ");
-    Serial.println(net.get_ssid());
     net.begin();
-    while(!net.get_net_status()){
+    while(!net.get_status()){
         Serial.println(".");
         delay(100);
     }
@@ -170,7 +166,7 @@ uint8_t VisMateClass::get_rotation(){
 }
 
 bool VisMateClass::get_network_status(){
-    _network_status = net.get_net_status();
+    _network_status = net.get_status();
     return _network_status;
 }
 

@@ -2,34 +2,19 @@
 #define CREDENDTIALS_H_
 
 #include <Arduino.h>
-
-#include "network.h"
 #include <Preferences.h>
 
-Preferences pf;
+class CredentialsClass{
+  private:
+    Preferences dir;
+    const char *_directory = "config";
+  public:
+    CredentialsClass();
+    void saveAt(String dir_name, String value);
+    String read(String dir_name);
+    void format();
+};
 
-void load(){
-    pf.begin("credentials", false);
-
-    pf.getString("ssid", "");
-    pf.getString("password", "");
-
-    pf.end();
-}
-
-void reset(){
-    pf.begin("credentials", false);
-    pf.clear();
-    pf.end();
-}
-
-void write(String ssid, String password){
-    pf.begin("credentials", false);
-
-    pf.putString("ssid", ssid);
-    pf.putString("password", password);
-
-    pf.end();
-}
+extern CredentialsClass data;
 
 #endif // CREDENDTIALS_H_
