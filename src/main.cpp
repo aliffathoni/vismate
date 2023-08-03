@@ -2,20 +2,19 @@
 #include "system/vismate.h"
 #include "device_config.h"
 
+#define MAIN_TAG "Main"
+
 void setup()
 {
     Serial.begin(115200);
     
     size_t psram_size = esp_spiram_get_size();
-    Serial.print("PSRAM Size ");
-    Serial.println(psram_size);
+    debugVal(MAIN_TAG, "PSRAM Size ",psram_size);
 
-    delay(1000);
     vismate.setup_control();
-    vismate.init_i2c();
-    vismate.scan_i2c();
     vismate.lcd_test();
-    vismate.speaker_test();
+    vismate.init_connection();
+    vismate.set_volume(0);
     delay(1000);
     vismate.screen(HOME_SCREEN);
 }
@@ -54,7 +53,7 @@ void loop(){
             vismate.screen(vismate.get_last_screen());
             break;
       }
-
+        debugVal(MAIN_TAG, "Screen change : ", vismate.get_screen());
       vTaskDelay(200 / portTICK_PERIOD_MS);
     }
 
@@ -91,7 +90,7 @@ void loop(){
             vismate.screen(vismate.get_last_screen());
             break;
       }
-
+        debugVal(MAIN_TAG, "Screen change : ", vismate.get_screen());
       vTaskDelay(200 / portTICK_PERIOD_MS);
     }
 
@@ -119,7 +118,7 @@ void loop(){
                 vismate.screen(vismate.get_last_screen());
                 break;
         }
-        
+        debugVal(MAIN_TAG, "Screen change : ", vismate.get_screen());
         vTaskDelay(200 / portTICK_PERIOD_MS);
     }
 }

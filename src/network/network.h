@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <WiFi.h>
+#include <string.h>
 #include <FirebaseESP32.h>
 #include <DNSServer.h>
 #include <AsyncTCP.h>
@@ -13,7 +14,7 @@
 #include "../device_config.h"
 #include "web_handle.h"
 
-#define TAG "Network"
+#define NET_TAG "Network"
 
 class CaptiveRequestHandler : public AsyncWebHandler {
 public:
@@ -44,7 +45,6 @@ class NetworkClass{
   private:
     bool _connection_status = false;
     String ssid, pass;
-    String ssid_ap = DEFAULT_DEVICE_NAME;
 };
 
 extern NetworkClass net;

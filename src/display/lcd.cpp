@@ -14,22 +14,13 @@ void LCDClass::init_tft(){
     // tft.setFreeFont(&FreeSans18pt7b);
     tft.setTextDatum(CC_DATUM);
     tft.setTextColor(TFT_BLACK, TFT_WHITE);
-    tft.drawString("Loading123", 120, 120, 1);
-    delay(1000);
-    tft.fillScreen(TFT_WHITE);
-    tft.drawString("Loading123", 120, 120, 3);
-    delay(1000);
-    tft.fillScreen(TFT_WHITE);
-    tft.drawString("Loading123", 120, 120, 4);
-    delay(1000);
-    tft.fillScreen(TFT_WHITE);
-    tft.drawString("Loading123", 120, 120, 5);
-    delay(1000);
-    tft.fillScreen(TFT_WHITE);
-    tft.drawString("Loading123", 120, 120, 6);
-    delay(1000);
-    tft.fillScreen(TFT_WHITE);
-    tft.drawString("Loading123", 120, 120, 7);
+    // tft.drawString("Loading123", 120, 120, 4); //small
+    // delay(1000);
+    // tft.fillScreen(TFT_WHITE);
+    // tft.drawString("Loading 6", 120, 120, 6); //big
+    // delay(1000);
+    // tft.fillScreen(TFT_WHITE);
+    // tft.drawString("Loading 7", 120, 120, 7); //watch
 
     bgSprite.createSprite(240, 240);
     bgSprite.setSwapBytes(true);

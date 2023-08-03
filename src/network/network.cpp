@@ -12,7 +12,7 @@ NetworkClass::NetworkClass(){
 void NetworkClass::setupServer(){
   server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
       request->send_P(200, "text/html", index_html); 
-      debug(TAG, "Client Connected");
+      debug(NET_TAG, "Client Connected");
   });
     
   server.on("/get", HTTP_GET, [] (AsyncWebServerRequest *request) {
@@ -24,7 +24,7 @@ void NetworkClass::setupServer(){
         inputParam = "ssid";
         net_instances->ssid = inputMessage;
         data.saveAt("ssid", net_instances->ssid);
-        debugVal(TAG, "SSID : ", net_instances->ssid);
+        debugVal(NET_TAG, "SSID : ", net_instances->ssid);
       }
 
       if (request->hasParam("password")) {
@@ -32,10 +32,10 @@ void NetworkClass::setupServer(){
         inputParam = "password";
         net_instances->pass = inputMessage;
         data.saveAt("pass", net_instances->pass);
-        debugVal(TAG, "Password : ", net_instances->pass);
+        debugVal(NET_TAG, "Password : ", net_instances->pass);
       }
       request->send(200, "text/html", "The values entered by you have been successfully sent to the device <br><a href=\"/\">Return to Home Page</a>");
-      debug(TAG, "SSID obtained!");
+      debug(NET_TAG, "SSID obtained!");
       net_instances->_connection_status = true;
       server.end();
   });
@@ -44,7 +44,7 @@ void NetworkClass::setupServer(){
 void NetworkClass::connect(String ssid, String pass){
   WiFi.disconnect();
   WiFi.mode(WIFI_STA);
-  debugVal(TAG, "Connecting to ", data.read("ssid"));
+  debugVal(NET_TAG, "Connecting to ", data.read("ssid"));
   WiFi.begin(ssid.c_str(), pass.c_str());
 }
 
@@ -59,7 +59,8 @@ bool NetworkClass::get_status(){
 void NetworkClass::begin(){
   unsigned long print = millis();
   if(data.read("ssid")==""){
-    net_instances->reconnect(net_instances->ssid_ap);
+    String ap = DEFAULT_AP_SSID;
+    net_instances->reconnect(ap);
     while(!net_instances->_connection_status){
       dnsServer.processNextRequest();
       if(millis() - print > 1000){
@@ -69,7 +70,7 @@ void NetworkClass::begin(){
     }
     Serial.print("");
   } else{
-    debug(TAG, "Data acquired");
+    debug(NET_TAG, "Data acquired");
     net_instances->ssid = data.read("ssid");
     net_instances->pass = data.read("pass");
   }
@@ -83,24 +84,24 @@ void NetworkClass::begin(){
       print = millis();
       connect_chance--;
       if(connect_chance < 1){
-        debug(TAG, "WiFi not found!");
+        debug(NET_TAG, "WiFi not found!");
         data.format();
-        debug(TAG, "Restarting...");
+        debug(NET_TAG, "Restarting...");
         ESP.restart();
       }
     }
   }
   Serial.println("");
-  debug(TAG, "Connected!");
+  debug(NET_TAG, "Connected!");
 }
 
 void NetworkClass::reconnect(String ap_name){
   WiFi.disconnect();
   WiFi.mode(WIFI_AP);
   WiFi.softAP(ap_name.c_str());
-  debugVal(TAG, "AP IP address: ", WiFi.softAPIP());
+  debugVal(NET_TAG, "AP IP address: ", WiFi.softAPIP());
   net_instances->setupServer();
-  debug(TAG, "Starting DNS Server");
+  debug(NET_TAG, "Starting DNS Server");
   dnsServer.start(53, "*", WiFi.softAPIP());
   server.addHandler(new CaptiveRequestHandler()).setFilter(ON_AP_FILTER);//only when requested from AP
   //more handlers...

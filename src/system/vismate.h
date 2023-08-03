@@ -3,11 +3,14 @@
 
 #include <Arduino.h>
 #include <Wire.h>
+#include <string.h>
 #include "../device_config.h"
 #include "../network/network.h"
 #include "../display/lcd.h"
 #include "../speaker/voice.h"
 #include "../sensor/range.h"
+
+#define VIS_TAG "Vismate"
 
 class VisMateClass {
     public :

@@ -27,20 +27,19 @@ void VisMateClass::setup_control(uint8_t up_pin, uint8_t mid_pin, uint8_t down_p
 }
 
 void VisMateClass::init_connection(){
+    data.format();
     net.begin();
     while(!net.get_status()){
         Serial.println(".");
         delay(100);
     }
 
-    Serial.println(".");
-    Serial.print("Connected at ");
-    Serial.println(net.get_ip());
+    debugVal(VIS_TAG, "Connected at ", net.get_ip());
 }
 
 void VisMateClass::lcd_test(){
     lcd.init_tft();
-    delay(5000);
+    // delay(5000);
     lcd.boot();
 }
 
