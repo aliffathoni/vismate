@@ -16,13 +16,13 @@ void VoiceClass::speak(const char *buff){
   audio.connecttospeech(buff, "en");                      //Mengubah data digital suara ke analog
   neopixelWrite(RGB_BUILTIN,0,0,RGB_BRIGHTNESS); // Blue
   bool soundPlay = true;
-  Serial.println(buff);
+  debugVal(AUDIO_TAG,"Audio out : ",buff);
 
   while(soundPlay){
     audio.loop();
     if(!audio.isRunning()) {
       soundPlay = false;
-      Serial.println("Audio Stopped");
+      debug(AUDIO_TAG, "Audio Stopped");
       neopixelWrite(RGB_BUILTIN,0,0,0); // Blue
     }
   }

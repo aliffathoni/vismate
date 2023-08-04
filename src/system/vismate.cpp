@@ -27,20 +27,14 @@ void VisMateClass::setup_control(uint8_t up_pin, uint8_t mid_pin, uint8_t down_p
 }
 
 void VisMateClass::init_connection(){
-    data.format();
     net.begin();
-    while(!net.get_status()){
-        Serial.println(".");
-        delay(100);
-    }
 
     debugVal(VIS_TAG, "Connected at ", net.get_ip());
 }
 
-void VisMateClass::lcd_test(){
+void VisMateClass::init_lcd(){
     lcd.init_tft();
-    // delay(5000);
-    lcd.boot();
+    lcd.show_logo();
 }
 
 void VisMateClass::speaker_test(){
@@ -76,40 +70,67 @@ void VisMateClass::scan_i2c(){
 }
 
 void VisMateClass::screen(Menu_screen_t new_screen){
+    _last_screen = _screen_now;
     _screen_now = new_screen;
 
+    if(_screen_now < 6 && _screen_now > 0) _mode = _screen_now;
+
+    // main menu
     if(_last_screen == SETTING && _screen_now == HOME_SCREEN){
         for(int x = 240; x >= 0; x-=40){
-            lcd.menu(_last_screen, x-240);
-            lcd.menu(_screen_now, x);
+            lcd.swipe(_last_screen, x-240);
+            lcd.swipe(_screen_now, x);
         }
-        _last_screen = _screen_now;
+        debugVal(VIS_TAG, "Swipe to new screen : ", _screen_now);
     
     }   else if(_last_screen == HOME_SCREEN && _screen_now == SETTING){
         for(int x = 0; x <= 240; x+=40){
-          lcd.menu(_last_screen, x);
-          lcd.menu(_screen_now, x-240);
+          lcd.swipe(_last_screen, x);
+          lcd.swipe(_screen_now, x-240);
         }
-        _last_screen = _screen_now;
+        debugVal(VIS_TAG, "Swipe to new screen : ", _screen_now);
     
     }   else if(_last_screen < _screen_now && _screen_now <= 5){
         for(int x = 240; x >= 0; x-=40){
-            lcd.menu(_last_screen, x-240);
-            lcd.menu(_screen_now, x);
+            lcd.swipe(_last_screen, x-240);
+            lcd.swipe(_screen_now, x);
         }
-        _last_screen = _screen_now;
-    
-    }   else if(_last_screen > _screen_now && _screen_now <= 5){
+        debugVal(VIS_TAG, "Swipe to new screen : ", _screen_now);
+        
+    }   else if(_last_screen > _screen_now && _screen_now <= 5 && _last_screen <=5){        
         for(int x = 0; x <= 240; x+=40){
-            lcd.menu(_last_screen, x);
-            lcd.menu(_screen_now, x-240);
+            lcd.swipe(_last_screen, x);
+            lcd.swipe(_screen_now, x-240);
         }
-        _last_screen = _screen_now;
-    
-    }   else if(_screen_now > 5){
-        lcd.menu(_screen_now, 0);
+        debugVal(VIS_TAG, "Swipe to new screen : ", _screen_now);
+        
+    // app
+    }   else if(_screen_now > 5 && _last_screen > 5){
+        if(_last_screen < _screen_now){
+            for(int x = 240; x >= 0; x-=40){
+                lcd.slide(_last_screen, x-240);
+                lcd.slide(_screen_now, x);
+            }
+            debugVal(VIS_TAG, "Slide to new screen : ", _screen_now);
+            
+        }   else if(_last_screen > _screen_now){        
+            for(int x = 0; x <= 240; x+=40){
+                lcd.slide(_last_screen, x);
+                lcd.slide(_screen_now, x-240);
+            }
+            debugVal(VIS_TAG, "Slide to new screen : ", _screen_now);
+        
+        }
+    }   else if(_screen_now < 6 && _last_screen > 5){
+        for(int x = 0; x <= 240; x+=40){
+            lcd.slide(_last_screen, x);
+            lcd.slide(_screen_now, x-240);
+        }
+        debugVal(VIS_TAG, "Slide to new screen : ", _screen_now);
+      
+    // error
     }   else{
-        lcd.menu(_screen_now, 0);
+        lcd.swipe(_screen_now, 0);
     }
 
     if(_volume > 0){
@@ -117,8 +138,8 @@ void VisMateClass::screen(Menu_screen_t new_screen){
     }
 }
 
-void VisMateClass::talk(Menu_screen_t new_screen){
-    switch (new_screen) {
+void VisMateClass::talk(Menu_screen_t screen_name){
+    switch (screen_name) {
         case HOME_SCREEN:
             voice.speak("Home screen");
             break;

@@ -20,39 +20,19 @@ class VisMateClass {
         void init_connection();
         void init_i2c();
         void speaker_test();
-        void lcd_test();
+        void init_lcd();
         void init_tof();
         void scan_i2c();
         void navigation_object();
-
-        // Setting related function
-        /*
-         * @brief Change speaker volume, 0 to silent, 21 max
-         *
-         * @param volume Range volume point 0-21
-         */
         void set_volume(uint8_t volume);
         uint8_t get_volume();
         void set_rotation(uint8_t rotation);
         uint8_t get_rotation();
         bool get_network_status();
 
-        // Screen related function
-        /*
-         * @brief Set screen on menu
-         * 
-         * @param new_screen New screen destination
-         */
+        // screen related
         void screen(Menu_screen_t new_screen);
-
-        /*
-         * @brief Talkback new screen position
-         *
-         * @param new_screen New screen destination
-         */
-        void talk(Menu_screen_t new_screen);
-        void openTo(Menu_screen_t app_screen);
-        void backTo(Menu_screen_t last_screen);
+        void talk(Menu_screen_t screen_name);
         Menu_screen_t get_screen();
         Menu_screen_t get_last_screen();
 
@@ -64,7 +44,7 @@ class VisMateClass {
         uint8_t _rotation;
         bool _network_status;
 
-        Menu_screen_t _mode_screen;
+        Menu_screen_t _mode;
         Menu_screen_t _screen_now;
         Menu_screen_t _last_screen;
 };

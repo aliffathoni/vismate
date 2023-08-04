@@ -31,7 +31,7 @@ void LCDClass::init_tft(){
     iconSprite.setSwapBytes(true);
 }
 
-void LCDClass::boot(){
+void LCDClass::show_logo(){
     tft.setRotation(3);
     tft.fillScreen(TFT_WHITE);
     tft.setPivot(120, 120);
@@ -50,30 +50,11 @@ void LCDClass::boot(){
     bgSprite.pushSprite(5, 5);
 }
 
-void LCDClass::rotate(int rotation_state){
-    tft.setRotation(rotation_state);
-    _rotation_state = rotation_state;
-}
-
-void LCDClass::menu(Menu_screen_t screen, int y_pos){
+void LCDClass::swipe(Menu_screen_t screen, int y_pos){
     switch (screen) {
-
         case HOME_SCREEN:
             bgSprite.fillSprite(TFT_WHITE);
             bgSprite.pushImage(0, 0, 230, 230, Home);
-
-            textSprite.fillSprite(TFT_WHITE);
-            // textSprite.setFreeFont(&FreeSans24pt7b);
-            textSprite.setTextDatum(TR_DATUM);
-            textSprite.setTextColor(TFT_BLACK, TFT_WHITE);
-            textSprite.drawString("88:88", 205, 35, 7);
-            
-            textSprite.setFreeFont(&FreeSans12pt7b);
-            textSprite.setTextDatum(TR_DATUM);
-            textSprite.setTextColor(TFT_BLACK, TFT_WHITE);
-            textSprite.drawString("Sunday", 200, 100);
-            textSprite.pushToSprite(&bgSprite, 0, 0, TFT_WHITE);
-            
             bgSprite.pushSprite(0, y_pos+5);
             break;
         case NOTES:
@@ -101,6 +82,17 @@ void LCDClass::menu(Menu_screen_t screen, int y_pos){
             bgSprite.pushImage(5, 0, 230, 230, setting_icon);
             bgSprite.pushSprite(0, y_pos+5);
             break;
+        
+        default:
+            bgSprite.fillSprite(TFT_WHITE);
+            bgSprite.pushImage(0, 0, 230, 230, Home);
+            bgSprite.pushSprite(5, y_pos+5);
+            break;
+    }
+}
+
+void LCDClass::slide(Menu_screen_t screen, int x_pos){
+    switch (screen) {
         case HOME_MAPS:
             bgSprite.fillSprite(TFT_WHITE);
             iconSprite.fillSprite(TFT_WHITE);
@@ -114,40 +106,45 @@ void LCDClass::menu(Menu_screen_t screen, int y_pos){
             textSprite.drawString("Brawijaya", 95, 120);
             textSprite.pushToSprite(&bgSprite, 0, 0, TFT_WHITE);
             
-            bgSprite.pushSprite(0, 0);
+            bgSprite.pushSprite(x_pos, 0);
             break;
         case SHOW_MAPS:
             bgSprite.fillSprite(TFT_WHITE);
-            bgSprite.drawRoundRect(0, 0, 235, 235, 90, TFT_NAVY);
-            bgSprite.pushImage(5, 5, 230, 230, ub);
-            textSprite.fillSprite(TFT_WHITE);
-            textSprite.drawRect(0, 210, 240, 20, TFT_NAVY);
-            textSprite.setFreeFont(&FreeSans12pt7b);
-            textSprite.setTextDatum(CC_DATUM);
-            textSprite.setTextColor(TFT_WHITE, TFT_NAVY);
-            textSprite.drawString("Back", 120, 220);
-            textSprite.pushToSprite(&bgSprite, 0, 0, TFT_WHITE);
-            bgSprite.pushSprite(0, 0);
+            bgSprite.pushImage(5, 5, 230, 230, map_ub);
+            bgSprite.pushSprite(x_pos+5, 0);
             break;
 
         case LISTENING:
             bgSprite.fillSprite(TFT_WHITE);
             bgSprite.pushImage(0, 0, 230, 230, listening);
-            bgSprite.pushSprite(5, y_pos+5);
+            bgSprite.pushSprite(x_pos+5, 5);
             break;
 
         case LOADING:
             bgSprite.fillSprite(TFT_WHITE);
             bgSprite.pushImage(0, 0, 230, 230, loading);
-            bgSprite.pushSprite(5, y_pos+5);
+            bgSprite.pushSprite(x_pos+5, 5);
             break;
-
+        
         default:
             bgSprite.fillSprite(TFT_WHITE);
             bgSprite.pushImage(0, 0, 230, 230, Home);
-            bgSprite.pushSprite(5, y_pos+5);
+            bgSprite.pushSprite(x_pos+5, 5);
             break;
     }
+
+}
+
+void LCDClass::update_time(String time, String date){
+    timeSprite.fillSprite(TFT_WHITE);
+    timeSprite.setTextDatum(TR_DATUM);
+    timeSprite.setTextColor(TFT_BLACK, TFT_WHITE);
+    timeSprite.drawString("88:88", 205, 35, 7);
+
+    timeSprite.setTextDatum(TR_DATUM);
+    timeSprite.setTextColor(TFT_BLACK, TFT_WHITE);
+    timeSprite.drawString("SUN 30", 200, 100, 4);
+    timeSprite.pushSprite(0, 0, TFT_WHITE);
 }
 
 void LCDClass::set_rotation(uint8_t rotation){

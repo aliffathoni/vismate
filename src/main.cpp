@@ -12,8 +12,9 @@ void setup()
     debugVal(MAIN_TAG, "PSRAM Size ",psram_size);
 
     vismate.setup_control();
-    vismate.lcd_test();
+    vismate.init_lcd();
     vismate.init_connection();
+    // vismate.speaker_test();
     vismate.set_volume(0);
     delay(1000);
     vismate.screen(HOME_SCREEN);
@@ -40,6 +41,8 @@ void loop(){
         case NOTES:
             vismate.screen(HOME_SCREEN);
             break;
+
+
         case HOME_MAPS:
             vismate.screen(MAPS);
             break;

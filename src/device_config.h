@@ -28,11 +28,9 @@ typedef enum {
     MAPS,
     SETTING,
 
-    // Extra
-    LOADING,
-
     // Notes
     LISTENING,
+    LOADING, // Extra
     SPEECH_TO_TEXT,
     LISTENING_RESULT,
 

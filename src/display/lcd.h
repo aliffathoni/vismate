@@ -7,33 +7,30 @@
 #include <SPI.h>
 
 #include "../device_config.h"
-#include "image.h"
-#include "listening.h"
-#include "loading.h"
-#include "ub.h"
-#include "nunito.h"
+#include "lcd_asset.h"
 
 // typedef void (*CallBacFunc) (Menu_State_t);
+
+#define small_font  4
+#define big_font    6
+#define number_font 7
 
 class LCDClass {
     private:
         TFT_eSPI tft = TFT_eSPI();
-        TFT_eSprite bgSprite = TFT_eSprite(&tft);
-        TFT_eSprite iconSprite = TFT_eSprite(&tft);
-        TFT_eSprite textSprite = TFT_eSprite(&tft);
-
-        int _rotation_state;
+        TFT_eSprite bgSprite = TFT_eSprite(&tft);   //full
+        TFT_eSprite iconSprite = TFT_eSprite(&tft); //tengah
+        TFT_eSprite textSprite = TFT_eSprite(&tft); //boot & choose
+        TFT_eSprite timeSprite = TFT_eSprite(&tft); //time & date
     
     public:
         LCDClass(void);
         void init_tft(void);
         void menu(Menu_screen_t screen, int y_pos);
-        // void moveTo(int menu, int y_pos);
-        // void backTo(int menu, int y_pos);
-        void rotate(int rotation_state);
-        void boot();
-        // void connect(bool connection_status);
-        // void showServer();
+        void swipe(Menu_screen_t screen, int y_pos);
+        void slide(Menu_screen_t screen, int x_pos);
+        void show_logo();
+        void update_time(String time, String date);
         void set_rotation(uint8_t rotation);
         uint8_t get_rotation();
 };
