@@ -136,15 +136,13 @@ void LCDClass::slide(Menu_screen_t screen, int x_pos){
 }
 
 void LCDClass::update_time(String time, String date){
-    timeSprite.fillSprite(TFT_WHITE);
-    timeSprite.setTextDatum(TR_DATUM);
-    timeSprite.setTextColor(TFT_BLACK, TFT_WHITE);
-    timeSprite.drawString("88:88", 205, 35, 7);
-
-    timeSprite.setTextDatum(TR_DATUM);
-    timeSprite.setTextColor(TFT_BLACK, TFT_WHITE);
-    timeSprite.drawString("SUN 30", 200, 100, 4);
-    timeSprite.pushSprite(0, 0, TFT_WHITE);
+    bgSprite.fillSprite(TFT_WHITE);
+    bgSprite.pushImage(0, 0, 230, 230, Home);
+    bgSprite.setTextDatum(TR_DATUM);
+    bgSprite.setTextColor(TFT_BLACK);
+    bgSprite.drawString(time, 205, 35, 7);
+    bgSprite.drawString(date, 200, 100, 4);
+    bgSprite.pushSprite(0, 5);
 }
 
 void LCDClass::set_rotation(uint8_t rotation){

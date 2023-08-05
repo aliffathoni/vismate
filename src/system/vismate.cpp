@@ -12,8 +12,8 @@ void VisMateClass::init_tof(){
 
 void VisMateClass::setup_control(){
     pinMode(_up_pin, INPUT_PULLUP);
-    pinMode(_mid_pin, INPUT_PULLUP);
-    pinMode(_down_pin, INPUT_PULLUP);
+    // pinMode(_mid_pin, INPUT_PULLUP);
+    // pinMode(_down_pin, INPUT_PULLUP);
 }
 
 void VisMateClass::setup_control(uint8_t up_pin, uint8_t mid_pin, uint8_t down_pin){
@@ -39,7 +39,6 @@ void VisMateClass::init_lcd(){
 
 void VisMateClass::speaker_test(){
     voice.init();
-    vismate_instances->init_connection();
     voice.speak("Device Connected");
 }
 
@@ -73,7 +72,10 @@ void VisMateClass::screen(Menu_screen_t new_screen){
     _last_screen = _screen_now;
     _screen_now = new_screen;
 
-    if(_screen_now < 6 && _screen_now > 0) _mode = _screen_now;
+    if(new_screen < 6 && new_screen > 0){
+      _mode = new_screen;
+      debugVal(VIS_TAG, "Mode : ", _mode);
+    }
 
     // main menu
     if(_last_screen == SETTING && _screen_now == HOME_SCREEN){
@@ -81,56 +83,67 @@ void VisMateClass::screen(Menu_screen_t new_screen){
             lcd.swipe(_last_screen, x-240);
             lcd.swipe(_screen_now, x);
         }
-        debugVal(VIS_TAG, "Swipe to new screen : ", _screen_now);
+        lcd.update_time("23:59", "SUN30");
+        debugVal(VIS_TAG, "1 Swipe to new screen : ", _screen_now);
     
     }   else if(_last_screen == HOME_SCREEN && _screen_now == SETTING){
         for(int x = 0; x <= 240; x+=40){
           lcd.swipe(_last_screen, x);
           lcd.swipe(_screen_now, x-240);
         }
-        debugVal(VIS_TAG, "Swipe to new screen : ", _screen_now);
+        debugVal(VIS_TAG, "2 Swipe to new screen : ", _screen_now);
     
     }   else if(_last_screen < _screen_now && _screen_now <= 5){
         for(int x = 240; x >= 0; x-=40){
             lcd.swipe(_last_screen, x-240);
             lcd.swipe(_screen_now, x);
         }
-        debugVal(VIS_TAG, "Swipe to new screen : ", _screen_now);
+        debugVal(VIS_TAG, "3 Swipe to new screen : ", _screen_now);
         
     }   else if(_last_screen > _screen_now && _screen_now <= 5 && _last_screen <=5){        
         for(int x = 0; x <= 240; x+=40){
             lcd.swipe(_last_screen, x);
             lcd.swipe(_screen_now, x-240);
         }
-        debugVal(VIS_TAG, "Swipe to new screen : ", _screen_now);
+        if(_screen_now == HOME_SCREEN) lcd.update_time("23:59", "SUN30");
+        debugVal(VIS_TAG, "4 Swipe to new screen : ", _screen_now);
         
     // app
+    }   else if(_screen_now > 5 && _last_screen < 5){
+        for(int x = 240; x >= 0; x-=40){
+            lcd.slide(_mode, x-240);
+            lcd.slide(_screen_now, x);
+        }
+        debugVal(VIS_TAG, "5 Slide to new screen : ", _screen_now);
+            
     }   else if(_screen_now > 5 && _last_screen > 5){
         if(_last_screen < _screen_now){
             for(int x = 240; x >= 0; x-=40){
                 lcd.slide(_last_screen, x-240);
                 lcd.slide(_screen_now, x);
             }
-            debugVal(VIS_TAG, "Slide to new screen : ", _screen_now);
+            debugVal(VIS_TAG, "6 Slide to new screen : ", _screen_now);
             
         }   else if(_last_screen > _screen_now){        
             for(int x = 0; x <= 240; x+=40){
                 lcd.slide(_last_screen, x);
                 lcd.slide(_screen_now, x-240);
             }
-            debugVal(VIS_TAG, "Slide to new screen : ", _screen_now);
+            debugVal(VIS_TAG, "7 Slide to new screen : ", _screen_now);
         
         }
     }   else if(_screen_now < 6 && _last_screen > 5){
         for(int x = 0; x <= 240; x+=40){
-            lcd.slide(_last_screen, x);
+            lcd.slide(_mode, x);
             lcd.slide(_screen_now, x-240);
         }
-        debugVal(VIS_TAG, "Slide to new screen : ", _screen_now);
+        _screen_now = _mode;
+        debugVal(VIS_TAG, "8 Slide to new screen : ", _screen_now);
       
     // error
     }   else{
         lcd.swipe(_screen_now, 0);
+        debugVal(VIS_TAG, "9 Error : ", _screen_now);
     }
 
     if(_volume > 0){
