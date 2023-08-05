@@ -7,8 +7,7 @@
 #include <FirebaseESP32.h>
 #include <DNSServer.h>
 #include <AsyncTCP.h>
-#include <NTPClient.h>
-#include <WiFiUdp.h>
+#include "ntp_time.h"
 #include "ESPAsyncWebServer.h"
 #include "credentials.h"
 #include "../device_config.h"

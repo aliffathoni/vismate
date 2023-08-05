@@ -31,8 +31,10 @@ void loop(){
         }
 
         if(vismate.get_screen() == HOME_SCREEN){
-            lcd.update_time("23:59", "SUN30");
             debug(MAIN_TAG, "Update");
+            debugVal(MAIN_TAG, "Time now : ", ntp.get_time());
+            debugVal(MAIN_TAG, "Date now : ", ntp.get_date());
+            lcd.update_time(ntp.get_time(), ntp.get_date());
         }
         timeNow = millis();
     }

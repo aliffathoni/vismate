@@ -9,7 +9,8 @@
 #include "../device_config.h"
 #include "lcd_asset.h"
 
-// typedef void (*CallBacFunc) (Menu_State_t);
+// #define LCD_DEBUG
+#define LCD_TAG "LCD"
 
 #define small_font  4
 #define big_font    6

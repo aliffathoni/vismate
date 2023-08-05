@@ -85,6 +85,7 @@ void VisMateClass::screen(Menu_screen_t new_screen){
         }
         lcd.update_time("23:59", "SUN30");
         debugVal(VIS_TAG, "1 Swipe to new screen : ", _screen_now);
+        debugVal(VIS_TAG, "1 From last screen : ", _last_screen);
     
     }   else if(_last_screen == HOME_SCREEN && _screen_now == SETTING){
         for(int x = 0; x <= 240; x+=40){
@@ -92,6 +93,7 @@ void VisMateClass::screen(Menu_screen_t new_screen){
           lcd.swipe(_screen_now, x-240);
         }
         debugVal(VIS_TAG, "2 Swipe to new screen : ", _screen_now);
+        debugVal(VIS_TAG, "2 From last screen : ", _last_screen);
     
     }   else if(_last_screen < _screen_now && _screen_now <= 5){
         for(int x = 240; x >= 0; x-=40){
@@ -99,7 +101,8 @@ void VisMateClass::screen(Menu_screen_t new_screen){
             lcd.swipe(_screen_now, x);
         }
         debugVal(VIS_TAG, "3 Swipe to new screen : ", _screen_now);
-        
+        debugVal(VIS_TAG, "3 From last screen : ", _last_screen);
+    
     }   else if(_last_screen > _screen_now && _screen_now <= 5 && _last_screen <=5){        
         for(int x = 0; x <= 240; x+=40){
             lcd.swipe(_last_screen, x);
@@ -107,7 +110,8 @@ void VisMateClass::screen(Menu_screen_t new_screen){
         }
         if(_screen_now == HOME_SCREEN) lcd.update_time("23:59", "SUN30");
         debugVal(VIS_TAG, "4 Swipe to new screen : ", _screen_now);
-        
+        debugVal(VIS_TAG, "4 From last screen : ", _last_screen);
+    
     // app
     }   else if(_screen_now > 5 && _last_screen < 5){
         for(int x = 240; x >= 0; x-=40){
@@ -115,7 +119,9 @@ void VisMateClass::screen(Menu_screen_t new_screen){
             lcd.slide(_screen_now, x);
         }
         debugVal(VIS_TAG, "5 Slide to new screen : ", _screen_now);
-            
+        debugVal(VIS_TAG, "5 From last screen : ", _last_screen);
+        debugVal(VIS_TAG, "5 Mode : ", _mode);
+
     }   else if(_screen_now > 5 && _last_screen > 5){
         if(_last_screen < _screen_now){
             for(int x = 240; x >= 0; x-=40){
@@ -123,23 +129,28 @@ void VisMateClass::screen(Menu_screen_t new_screen){
                 lcd.slide(_screen_now, x);
             }
             debugVal(VIS_TAG, "6 Slide to new screen : ", _screen_now);
-            
+            debugVal(VIS_TAG, "6 From last screen : ", _last_screen);
+            debugVal(VIS_TAG, "8 Mode : ", _mode);
+
         }   else if(_last_screen > _screen_now){        
             for(int x = 0; x <= 240; x+=40){
                 lcd.slide(_last_screen, x);
                 lcd.slide(_screen_now, x-240);
             }
             debugVal(VIS_TAG, "7 Slide to new screen : ", _screen_now);
-        
+            debugVal(VIS_TAG, "7 From last screen : ", _last_screen);
+            debugVal(VIS_TAG, "7 Mode : ", _mode);
         }
     }   else if(_screen_now < 6 && _last_screen > 5){
         for(int x = 0; x <= 240; x+=40){
-            lcd.slide(_mode, x);
+            lcd.slide(_last_screen, x);
             lcd.slide(_screen_now, x-240);
         }
         _screen_now = _mode;
         debugVal(VIS_TAG, "8 Slide to new screen : ", _screen_now);
-      
+        debugVal(VIS_TAG, "8 From last screen : ", _last_screen);
+        debugVal(VIS_TAG, "8 Mode : ", _mode);
+        
     // error
     }   else{
         lcd.swipe(_screen_now, 0);

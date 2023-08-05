@@ -91,6 +91,8 @@ void NetworkClass::begin(){
       }
     }
   }
+  ntp.begin();
+  debug(NET_TAG, ntp.get_time());
   Serial.println("");
   debug(NET_TAG, "Connected!");
 }

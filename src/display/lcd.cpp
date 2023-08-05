@@ -11,16 +11,8 @@ void LCDClass::init_tft(){
     tft.init();
     tft.setRotation(3);
     tft.fillScreen(TFT_WHITE);
-    // tft.setFreeFont(&FreeSans18pt7b);
     tft.setTextDatum(CC_DATUM);
     tft.setTextColor(TFT_BLACK, TFT_WHITE);
-    // tft.drawString("Loading123", 120, 120, 4); //small
-    // delay(1000);
-    // tft.fillScreen(TFT_WHITE);
-    // tft.drawString("Loading 6", 120, 120, 6); //big
-    // delay(1000);
-    // tft.fillScreen(TFT_WHITE);
-    // tft.drawString("Loading 7", 120, 120, 7); //watch
 
     bgSprite.createSprite(240, 240);
     bgSprite.setSwapBytes(true);
@@ -29,6 +21,9 @@ void LCDClass::init_tft(){
 
     iconSprite.createSprite(50, 50);
     iconSprite.setSwapBytes(true);
+#ifdef LCD_DEBUG
+    debug(LCD_TAG, "Init LCD");
+#endif
 }
 
 void LCDClass::show_logo(){
@@ -48,6 +43,9 @@ void LCDClass::show_logo(){
     bgSprite.fillSprite(TFT_WHITE);
     bgSprite.pushImage(0, 0, 230, 230, device_logo);
     bgSprite.pushSprite(5, 5);
+#ifdef LCD_DEBUG
+    debug(LCD_TAG, "Show Logo");
+#endif
 }
 
 void LCDClass::swipe(Menu_screen_t screen, int y_pos){
@@ -56,43 +54,104 @@ void LCDClass::swipe(Menu_screen_t screen, int y_pos){
             bgSprite.fillSprite(TFT_WHITE);
             bgSprite.pushImage(0, 0, 230, 230, Home);
             bgSprite.pushSprite(0, y_pos+5);
+#ifdef LCD_DEBUG
+            debug(LCD_TAG, "Swipe Home");
+#endif            
             break;
         case NOTES:
             bgSprite.fillSprite(TFT_WHITE);
             bgSprite.pushImage(5, 0, 230, 230, notes_icon);
             bgSprite.pushSprite(0, y_pos+5);
+#ifdef LCD_DEBUG
+            debug(LCD_TAG, "Swipe Notes");
+#endif
             break;
         case SPEAK:
             bgSprite.fillSprite(TFT_WHITE);
             bgSprite.pushImage(5, 0, 230, 230, speech_icon);
             bgSprite.pushSprite(0, y_pos+5);
+#ifdef LCD_DEBUG
+            debug(LCD_TAG, "Swipe Speech");
+#endif
             break;
         case NAVIGATION:
             bgSprite.fillSprite(TFT_WHITE);
             bgSprite.pushImage(5, 0, 230, 230, navi_icon);
             bgSprite.pushSprite(0, y_pos+5);
+#ifdef LCD_DEBUG            
+            debug(LCD_TAG, "Swipe Navigation");
+#endif
             break;
         case MAPS:
             bgSprite.fillSprite(TFT_WHITE);
             bgSprite.pushImage(5, 0, 230, 230, maps_icon);
             bgSprite.pushSprite(0, y_pos+5);
+#ifdef LCD_DEBUG
+            debug(LCD_TAG, "Swipe Maps");
+#endif            
             break;
         case SETTING:
             bgSprite.fillSprite(TFT_WHITE);
             bgSprite.pushImage(5, 0, 230, 230, setting_icon);
             bgSprite.pushSprite(0, y_pos+5);
+#ifdef LCD_DEBUG
+            debug(LCD_TAG, "Swipe Setting");
+#endif
             break;
         
         default:
             bgSprite.fillSprite(TFT_WHITE);
             bgSprite.pushImage(0, 0, 230, 230, Home);
             bgSprite.pushSprite(5, y_pos+5);
+#ifdef LCD_DEBUG
+            debug(LCD_TAG, "Swipe Default");
+#endif
             break;
     }
 }
 
 void LCDClass::slide(Menu_screen_t screen, int x_pos){
     switch (screen) {
+        case NOTES:
+            bgSprite.fillSprite(TFT_WHITE);
+            bgSprite.pushImage(5, 0, 230, 230, notes_icon);
+            bgSprite.pushSprite(x_pos+5, 5);
+#ifdef LCD_DEBUG
+            debug(LCD_TAG, "Slide Notes");
+#endif
+            break;
+        case SPEAK:
+            bgSprite.fillSprite(TFT_WHITE);
+            bgSprite.pushImage(5, 0, 230, 230, speech_icon);
+            bgSprite.pushSprite(x_pos+5, 5);
+#ifdef LCD_DEBUG
+            debug(LCD_TAG, "Slide Speech");
+#endif
+            break;
+        case NAVIGATION:
+            bgSprite.fillSprite(TFT_WHITE);
+            bgSprite.pushImage(5, 0, 230, 230, navi_icon);
+            bgSprite.pushSprite(x_pos+5, 5);
+#ifdef LCD_DEBUG
+            debug(LCD_TAG, "Slide Navigation");
+#endif
+            break;
+        case MAPS:
+            bgSprite.fillSprite(TFT_WHITE);
+            bgSprite.pushImage(5, 0, 230, 230, maps_icon);
+            bgSprite.pushSprite(x_pos+5, 5);
+#ifdef LCD_DEBUG
+            debug(LCD_TAG, "Slide Maps");
+#endif
+            break;
+        case SETTING:
+            bgSprite.fillSprite(TFT_WHITE);
+            bgSprite.pushImage(5, 0, 230, 230, setting_icon);
+            bgSprite.pushSprite(x_pos+5, 5);
+#ifdef LCD_DEBUG
+            debug(LCD_TAG, "Slide Setting");
+#endif
+            break;
         case HOME_MAPS:
             bgSprite.fillSprite(TFT_WHITE);
             iconSprite.fillSprite(TFT_WHITE);
@@ -107,29 +166,44 @@ void LCDClass::slide(Menu_screen_t screen, int x_pos){
             textSprite.pushToSprite(&bgSprite, 0, 0, TFT_WHITE);
             
             bgSprite.pushSprite(x_pos, 0);
+#ifdef LCD_DEBUG
+            debug(LCD_TAG, "Slide Choose Maps");
+#endif
             break;
         case SHOW_MAPS:
             bgSprite.fillSprite(TFT_WHITE);
             bgSprite.pushImage(5, 5, 230, 230, map_ub);
             bgSprite.pushSprite(x_pos+5, 0);
+#ifdef LCD_DEBUG
+            debug(LCD_TAG, "Slide Home Maps");
+#endif
             break;
 
         case LISTENING:
             bgSprite.fillSprite(TFT_WHITE);
             bgSprite.pushImage(0, 0, 230, 230, listening);
             bgSprite.pushSprite(x_pos+5, 5);
+#ifdef LCD_DEBUG
+            debug(LCD_TAG, "Slide Listening");
+#endif
             break;
 
         case LOADING:
             bgSprite.fillSprite(TFT_WHITE);
             bgSprite.pushImage(0, 0, 230, 230, loading);
             bgSprite.pushSprite(x_pos+5, 5);
+#ifdef LCD_DEBUG
+            debug(LCD_TAG, "Slide Loading");
+#endif
             break;
         
         default:
             bgSprite.fillSprite(TFT_WHITE);
             bgSprite.pushImage(0, 0, 230, 230, Home);
             bgSprite.pushSprite(x_pos+5, 5);
+#ifdef LCD_DEBUG
+            debug(LCD_TAG, "Slide Default");
+#endif
             break;
     }
 
