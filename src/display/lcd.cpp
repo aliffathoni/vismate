@@ -17,10 +17,9 @@ void LCDClass::init_tft(){
     bgSprite.createSprite(240, 240);
     bgSprite.setSwapBytes(true);
 
-    textSprite.createSprite(240, 240);
+    textSprite.createSprite(100, 150);
 
     iconSprite.createSprite(50, 50);
-    iconSprite.setSwapBytes(true);
 #ifdef LCD_DEBUG
     debug(LCD_TAG, "Init LCD");
 #endif
@@ -155,25 +154,30 @@ void LCDClass::slide(Menu_screen_t screen, int x_pos){
         case HOME_MAPS:
             bgSprite.fillSprite(TFT_WHITE);
             iconSprite.fillSprite(TFT_WHITE);
+            
+            iconSprite.fillSprite(TFT_WHITE);
             iconSprite.pushImage(0, 0, 50, 50, choose_maps);
-            iconSprite.pushToSprite(&bgSprite, 40, 95);
+            iconSprite.pushToSprite(&bgSprite, 40, 95, TFT_WHITE);
             
-            textSprite.fillSprite(TFT_WHITE);
-            textSprite.setFreeFont(&FreeSans12pt7b);
-            textSprite.setTextDatum(CL_DATUM);
-            textSprite.setTextColor(TFT_BLACK, TFT_WHITE);
-            textSprite.drawString("Brawijaya", 95, 120);
-            textSprite.pushToSprite(&bgSprite, 0, 0, TFT_WHITE);
-            
+            bgSprite.setTextDatum(CL_DATUM);
+            bgSprite.setFreeFont(&FreeSans12pt7b);
+            bgSprite.setTextColor(TFT_BLACK, TFT_WHITE);
+            bgSprite.drawString("Brawijaya", 95, 130);
+
+            bgSprite.setTextDatum(TC_DATUM);
+            bgSprite.setFreeFont(&FreeSans9pt7b);
+            bgSprite.drawString("Home", 120, 150);
+
             bgSprite.pushSprite(x_pos, 0);
+
 #ifdef LCD_DEBUG
             debug(LCD_TAG, "Slide Choose Maps");
 #endif
             break;
         case SHOW_MAPS:
-            bgSprite.fillSprite(TFT_WHITE);
-            bgSprite.pushImage(5, 5, 230, 230, map_ub);
-            bgSprite.pushSprite(x_pos+5, 0);
+            bgSprite.fillSprite(TFT_NAVY);
+            bgSprite.pushImage(1, 1, 238, 238, map_ub);
+            bgSprite.pushSprite(x_pos, 0);
 #ifdef LCD_DEBUG
             debug(LCD_TAG, "Slide Home Maps");
 #endif

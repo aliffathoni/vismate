@@ -12,6 +12,7 @@ class NTPClass {
     void begin();
     String get_time();
     String get_date();
+    String get_raw_date();
 };
 
 extern NTPClass ntp;

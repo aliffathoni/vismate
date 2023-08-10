@@ -39,7 +39,7 @@ void VisMateClass::init_lcd(){
 
 void VisMateClass::speaker_test(){
     voice.init();
-    voice.speak("Device Connected");
+    voice.speak("Welcome to vismate!");
 }
 
 void VisMateClass::init_i2c(){
@@ -82,8 +82,8 @@ void VisMateClass::screen(Menu_screen_t new_screen){
         for(int x = 240; x >= 0; x-=40){
             lcd.swipe(_last_screen, x-240);
             lcd.swipe(_screen_now, x);
-        }
-        lcd.update_time("23:59", "SUN30");
+        }    
+        lcd.update_time(ntp.get_time(), ntp.get_date());
         debugVal(VIS_TAG, "1 Swipe to new screen : ", _screen_now);
         debugVal(VIS_TAG, "1 From last screen : ", _last_screen);
     
@@ -108,7 +108,7 @@ void VisMateClass::screen(Menu_screen_t new_screen){
             lcd.swipe(_last_screen, x);
             lcd.swipe(_screen_now, x-240);
         }
-        if(_screen_now == HOME_SCREEN) lcd.update_time("23:59", "SUN30");
+        if(_screen_now == HOME_SCREEN) lcd.update_time(ntp.get_time(), ntp.get_date());
         debugVal(VIS_TAG, "4 Swipe to new screen : ", _screen_now);
         debugVal(VIS_TAG, "4 From last screen : ", _last_screen);
     
