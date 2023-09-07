@@ -24,3 +24,6 @@
 [submodule "lib/RotaryEncoder"]
 	path = lib/RotaryEncoder
 	url = https://github.com/igorantolic/ai-esp32-rotary-encoder.git
+[submodule "lib/Adafruit_VL530X"]
+	path = lib/Adafruit_VL530X
+	url = https://github.com/adafruit/Adafruit_VL53L0X.git
