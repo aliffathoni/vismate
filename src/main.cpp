@@ -3,23 +3,42 @@
 #include "device_config.h"
 #include <HardwareSerial.h>
 #include "AiEsp32RotaryEncoder.h"
+#include "Adafruit_VL53L0X.h"
+#include "driver/rtc_io.h"
 
-#define ROTARY_ENCODER_A_PIN 19
-#define ROTARY_ENCODER_B_PIN 20
-#define ROTARY_ENCODER_BUTTON_PIN 48
-#define ROTARY_ENCODER_VCC_PIN -1
-#define ROTARY_ENCODER_STEPS 4
+TwoWire *TOF_I2C;
 
-AiEsp32RotaryEncoder rotaryEncoder = AiEsp32RotaryEncoder(ROTARY_ENCODER_A_PIN, ROTARY_ENCODER_B_PIN, ROTARY_ENCODER_BUTTON_PIN, ROTARY_ENCODER_VCC_PIN, ROTARY_ENCODER_STEPS);
+Adafruit_VL53L0X lox = Adafruit_VL53L0X();
+
+AiEsp32RotaryEncoder rotaryEncoder = AiEsp32RotaryEncoder(19, 20, 48, -1, 4);
 
 HardwareSerial xiao(2);
 
 int position = 0;
 
+bool updateTof = false;
+
 #define MAIN_TAG "Main"
 //21 TX, RX 14
 unsigned long timeNow;
 unsigned long timeUpdate;
+unsigned long tofUpdate;
+
+void print_wakeup_reason(){
+  esp_sleep_wakeup_cause_t wakeup_reason;
+
+  wakeup_reason = esp_sleep_get_wakeup_cause();
+
+  switch(wakeup_reason)
+  {
+    case ESP_SLEEP_WAKEUP_EXT0 : Serial.println("Wakeup caused by external signal using RTC_IO"); break;
+    case ESP_SLEEP_WAKEUP_EXT1 : Serial.println("Wakeup caused by external signal using RTC_CNTL"); break;
+    case ESP_SLEEP_WAKEUP_TIMER : Serial.println("Wakeup caused by timer"); break;
+    case ESP_SLEEP_WAKEUP_TOUCHPAD : Serial.println("Wakeup caused by touchpad"); break;
+    case ESP_SLEEP_WAKEUP_ULP : Serial.println("Wakeup caused by ULP program"); break;
+    default : Serial.printf("Wakeup was not caused by deep sleep: %d\n",wakeup_reason); break;
+  }
+}
 
 void swipeUpScreen(){
     switch (vismate.get_screen()){
@@ -164,10 +183,27 @@ void setup()
     Serial.begin(115200);
     xiao.begin(115200, SERIAL_8N1, 14, 21);
     delay(1000);
+    rtc_gpio_deinit(GPIO_NUM_16);
 
+    vismate.init_lcd();
+
+    print_wakeup_reason();
     vismate.setup_control();
     vismate.init_connection();
-    vismate.init_lcd();
+    
+    rtc_gpio_deinit(GPIO_NUM_11);
+    rtc_gpio_deinit(GPIO_NUM_12);
+    rtc_gpio_deinit(GPIO_NUM_15);
+    rtc_gpio_deinit(GPIO_NUM_17);
+    rtc_gpio_deinit(GPIO_NUM_18);
+
+    lcd.init_tft();
+    lcd.show_device_logo();
+    // vismate.init_lcd();
+    
+    lox.begin();
+    lox.configSensor(lox.VL53L0X_SENSE_LONG_RANGE);
+    
     vismate.speaker_test();
     delay(1000);
     lcd.update_time(ntp.get_time(), ntp.get_date());
@@ -181,8 +217,6 @@ void setup()
 }
 
 void loop(){
-    
-
     if (xiao.available()) {
         byte inByte = xiao.read();
         Serial.write(inByte);
@@ -194,7 +228,22 @@ void loop(){
         } else{
             debug(MAIN_TAG, "Disconnected");
         }
-        timeNow = millis();    
+        timeNow = millis();
+    }
+
+    if((millis() - tofUpdate > 250) && (updateTof)){
+        VL53L0X_RangingMeasurementData_t measure;
+    
+        Serial.print("Reading a measurement... ");
+        lox.rangingTest(&measure, false); // pass in 'true' to get debug data printout!
+
+        if (measure.RangeStatus != 4) {  // phase failures have incorrect data
+            Serial.print("Distance (mm): "); Serial.println(measure.RangeMilliMeter);
+        } else {
+            Serial.println(" out of range ");
+        }
+
+        tofUpdate = millis();
     }
 
     if(millis() - timeUpdate > 30000){
@@ -210,24 +259,11 @@ void loop(){
     control_loop();
 
     if(!digitalRead(16)){
-        debug(MAIN_TAG, "Click");
-        vTaskDelay(200 / portTICK_PERIOD_MS);
-        if(!digitalRead(16)){
-            debug(MAIN_TAG, "Hold");
-            vTaskDelay(200 / portTICK_PERIOD_MS);
-            if(!digitalRead(16)){
-                debug(MAIN_TAG, "Long Hold");
-                click();
-                vTaskDelay(200 / portTICK_PERIOD_MS);
-            } else{
-                debug(MAIN_TAG, "Hold Release");
-                swipeUpScreen();
-                vTaskDelay(200 / portTICK_PERIOD_MS);
-            }
-        } else{
-            debug(MAIN_TAG, "Release");
-            swipeDownScreen();
-            vTaskDelay(200 / portTICK_PERIOD_MS);
-        }
+        debug(MAIN_TAG, "Sleep mode...");
+        vTaskDelay(2000 / portTICK_PERIOD_MS);
+
+        rtc_gpio_pullup_en(GPIO_NUM_16);
+        esp_sleep_enable_ext0_wakeup(GPIO_NUM_16, LOW);
+        esp_deep_sleep_start();
     }
 }

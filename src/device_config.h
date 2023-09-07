@@ -49,12 +49,11 @@ typedef enum {
     SHOW_MAPS,
 
     // Setting
-    ROTATION,
-    SET_ROTATE,
-    REBOOT,
-    REBOOT_CONFIRM,
-    CONNECTIVITY,
-    SHOW_NETWORK
+    SET_VOLUME,
+    SET_TIMEOUT,
+    INFO_WIFI,
+    SETTING_BACK,
+    REBOOT
 } Menu_screen_t;
 
 #endif // DEVICE_CONFIG_H_

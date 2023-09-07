@@ -19,21 +19,29 @@
 class LCDClass {
     private:
         TFT_eSPI tft = TFT_eSPI();
+        TFT_eSprite mainBg = TFT_eSprite(&tft);   //full
         TFT_eSprite bgSprite = TFT_eSprite(&tft);   //full
         TFT_eSprite iconSprite = TFT_eSprite(&tft); //tengah
         TFT_eSprite textSprite = TFT_eSprite(&tft); //boot & choose
         TFT_eSprite timeSprite = TFT_eSprite(&tft); //time & date
-    
+
+        uint16_t _rotate_angle = 0;
+
     public:
         LCDClass(void);
         void init_tft(void);
         void menu(Menu_screen_t screen, int y_pos);
-        void swipe(Menu_screen_t screen, int y_pos);
-        void slide(Menu_screen_t screen, int x_pos);
+        void swipe(Menu_screen_t screen, int y_pos, uint16_t rotate_angle);
+        void slide(Menu_screen_t screen, int x_pos, uint16_t rotate_angle);
         void show_logo();
+        void show_device_logo();
         void update_time(String time, String date);
         void set_rotation(uint8_t rotation);
         uint8_t get_rotation();
+
+        uint16_t get_angle(){
+            return _rotate_angle;
+        }
 };
 
 extern LCDClass lcd;

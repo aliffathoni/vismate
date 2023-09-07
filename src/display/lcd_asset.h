@@ -21,5 +21,11 @@
 #include "image/map_ub.h"
 #include "image/timer_icon.h"
 #include "image/warning.h"
+#include "image/back.h"
+#include "image/setting_reboot.h"
+#include "image/setting_speaker.h"
+#include "image/setting_timeout.h"
+#include "image/setting_wifi.h"
+#include "image/_org_logo.h"
 
 #endif // LCD_ASSET_H_
