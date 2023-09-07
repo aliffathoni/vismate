@@ -21,3 +21,6 @@
 [submodule "lib/NTPClient"]
 	path = lib/NTPClient
 	url = https://github.com/arduino-libraries/NTPClient.git
+[submodule "lib/RotaryEncoder"]
+	path = lib/RotaryEncoder
+	url = https://github.com/igorantolic/ai-esp32-rotary-encoder.git
