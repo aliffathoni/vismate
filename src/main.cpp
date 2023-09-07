@@ -2,18 +2,24 @@
 #include "system/vismate.h"
 #include "device_config.h"
 #include <HardwareSerial.h>
-#include "sensor/MT6701.h"
-#include <SPI.h>
+#include "AiEsp32RotaryEncoder.h"
+
+#define ROTARY_ENCODER_A_PIN 19
+#define ROTARY_ENCODER_B_PIN 20
+#define ROTARY_ENCODER_BUTTON_PIN 48
+#define ROTARY_ENCODER_VCC_PIN -1
+#define ROTARY_ENCODER_STEPS 4
+
+AiEsp32RotaryEncoder rotaryEncoder = AiEsp32RotaryEncoder(ROTARY_ENCODER_A_PIN, ROTARY_ENCODER_B_PIN, ROTARY_ENCODER_BUTTON_PIN, ROTARY_ENCODER_VCC_PIN, ROTARY_ENCODER_STEPS);
 
 HardwareSerial xiao(2);
+
+int position = 0;
 
 #define MAIN_TAG "Main"
 //21 TX, RX 14
 unsigned long timeNow;
 unsigned long timeUpdate;
-
-SPIClass _magnetic_encoder;
-MT6701_t enc(&_magnetic_encoder, 20);
 
 void swipeUpScreen(){
     switch (vismate.get_screen()){
@@ -95,6 +101,12 @@ void swipeDownScreen(){
 }
 
 void click(){
+    static unsigned long lastTimePressed = 0; // Soft debouncing
+    if (millis() - lastTimePressed < 100){
+        return;
+    }
+    lastTimePressed = millis();
+
     switch (vismate.get_screen()){
         case MAPS:
             vismate.screen(HOME_MAPS);
@@ -121,15 +133,37 @@ void click(){
     
     debugVal(MAIN_TAG, "Screen now : ", vismate.get_screen());
     debugVal(MAIN_TAG, "Last screen : ", vismate.get_last_screen());
-        
+}
+
+void IRAM_ATTR rotary_isr()
+{
+    rotaryEncoder.readEncoder_ISR();
+}
+
+void control_loop(){
+    if(rotaryEncoder.encoderChanged()){
+        int buff = rotaryEncoder.readEncoder();
+
+        if(buff > position){
+            position = buff;
+            swipeDownScreen();
+        } else if(buff < position){
+            position = buff;
+            swipeUpScreen();
+        }
+    }
+
+    if (rotaryEncoder.isEncoderButtonClicked()){
+        debug(MAIN_TAG, "clicked");
+        click();
+    }
 }
 
 void setup()
 {
     Serial.begin(115200);
     xiao.begin(115200, SERIAL_8N1, 14, 21);
-    // size_t psram_size = esp_spiram_get_size();
-    // debugVal(MAIN_TAG, "PSRAM Size ",psram_size);
+    delay(1000);
 
     vismate.setup_control();
     vismate.init_connection();
@@ -137,12 +171,18 @@ void setup()
     vismate.speaker_test();
     delay(1000);
     lcd.update_time(ntp.get_time(), ntp.get_date());
-    _magnetic_encoder.begin(48, 10, -1, 20);
-    enc.Init();
     timeNow = millis();
+
+    rotaryEncoder.begin();
+    rotaryEncoder.setup(rotary_isr);
+    rotaryEncoder.setBoundaries(-100, 100, false);
+    rotaryEncoder.disableAcceleration();
+    rotaryEncoder.setEncoderValue(0);
 }
 
 void loop(){
+    
+
     if (xiao.available()) {
         byte inByte = xiao.read();
         Serial.write(inByte);
@@ -154,12 +194,7 @@ void loop(){
         } else{
             debug(MAIN_TAG, "Disconnected");
         }
-        enc.Sample();
-        debugVal(MAIN_TAG, "Magn Sensor Angle : ", enc.GetAngle());
-        debugVal(MAIN_TAG, "Magn Sensor Field : ", enc.GetField());
-        debugVal(MAIN_TAG, "Magn Sensor Status : ", enc.GetStatus());
-        debugVal(MAIN_TAG, "Magn Sensor Button : ", enc.GetButton());
-        timeNow = millis();
+        timeNow = millis();    
     }
 
     if(millis() - timeUpdate > 30000){
@@ -171,6 +206,8 @@ void loop(){
         }
         timeUpdate = millis();
     }
+
+    control_loop();
 
     if(!digitalRead(16)){
         debug(MAIN_TAG, "Click");

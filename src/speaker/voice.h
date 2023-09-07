@@ -5,7 +5,7 @@
 #include "Audio.h"
 #include "../device_config.h"
 
-#define I2S_DOUT      39
+#define I2S_DOUT      42
 #define I2S_BCLK      40
 #define I2S_LRC       41
 

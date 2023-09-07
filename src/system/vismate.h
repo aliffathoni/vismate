@@ -30,6 +30,8 @@ class VisMateClass {
         uint8_t get_rotation();
         bool get_network_status();
 
+        float get_angle();
+
         // screen related
         void screen(Menu_screen_t new_screen);
         void talk(Menu_screen_t screen_name);

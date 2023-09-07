@@ -13,6 +13,7 @@ void LCDClass::init_tft(){
     tft.fillScreen(TFT_WHITE);
     tft.setTextDatum(CC_DATUM);
     tft.setTextColor(TFT_BLACK, TFT_WHITE);
+    tft.setPivot(120, 120);
 
     bgSprite.createSprite(240, 240);
     bgSprite.setSwapBytes(true);
