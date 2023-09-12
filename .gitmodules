@@ -27,3 +27,6 @@
 [submodule "lib/Adafruit_VL530X"]
 	path = lib/Adafruit_VL530X
 	url = https://github.com/adafruit/Adafruit_VL53L0X.git
+[submodule "lib/ArduinoJson"]
+	path = lib/ArduinoJson
+	url = https://github.com/bblanchon/ArduinoJson.git
