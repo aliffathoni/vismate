@@ -1,7 +1,7 @@
 #include "ntp_time.h"
 
 WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "pool.ntp.org", 25200);
+NTPClient timeClient(ntpUDP, "pool.ntp.org", 28800);
 
 NTPClass *time_instances;
 
@@ -21,7 +21,9 @@ String NTPClass::get_time(){
 String NTPClass::get_date(){
   timeClient.update();
   String date_format = String(timeClient.getDate());
-  String date_value = timeClient.getFormattedDate().substring(0,3) +" "+ date_format;
+
+  String month_name[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+  String date_value = date_format +" "+ month_name[timeClient.getMonth() - 1];
   return date_value;
 }
 
@@ -29,6 +31,11 @@ String NTPClass::get_raw_date(){
   timeClient.update();
   String date_value = timeClient.getFormattedDate();
   return date_value;
+}
+
+long NTPClass::epoch(){
+  timeClient.update();
+  return timeClient.getEpochTime();
 }
 
 NTPClass ntp;

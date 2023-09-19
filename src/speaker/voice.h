@@ -13,10 +13,12 @@
 
 class VoiceClass{
   public:
+    VoiceClass();
     void init(void);
     void change_volume(uint8_t volume);
     void speak(const char *buff);
-  
+    bool isRunning();
+    void salam();
   private:
     Audio audio;
 };

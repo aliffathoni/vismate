@@ -13,6 +13,7 @@ class NTPClass {
     String get_time();
     String get_date();
     String get_raw_date();
+    long epoch();
 };
 
 extern NTPClass ntp;

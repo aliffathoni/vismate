@@ -11,24 +11,12 @@ void VisMateClass::init_tof(){
 }
 
 void VisMateClass::setup_control(){
-    pinMode(_up_pin, INPUT_PULLUP);
-    // pinMode(_mid_pin, INPUT_PULLUP);
-    // pinMode(_down_pin, INPUT_PULLUP);
-}
-
-void VisMateClass::setup_control(uint8_t up_pin, uint8_t mid_pin, uint8_t down_pin){
-    _up_pin = up_pin;
-    _mid_pin = mid_pin;
-    _down_pin = down_pin;
-    
-    pinMode(_up_pin, INPUT_PULLUP);
-    pinMode(_mid_pin, INPUT_PULLUP);
-    pinMode(_down_pin, INPUT_PULLUP);
+    pinMode(_button_pin, INPUT_PULLUP);
 }
 
 void VisMateClass::init_connection(){
     net.begin();
-
+    lcd.setBuff(data.read("ssid"));
     debugVal(VIS_TAG, "Connected at ", net.get_ip());
 }
 
@@ -39,6 +27,7 @@ void VisMateClass::init_lcd(){
 
 void VisMateClass::speaker_test(){
     voice.init();
+    voice.change_volume(21);
     voice.speak("Welcome to vismate!");
 }
 
@@ -65,7 +54,7 @@ void VisMateClass::scan_i2c(){
         debug(VIS_TAG, "No I2C devices found");
     }
 }
-
+/*
 void VisMateClass::screen(Menu_screen_t new_screen){
     _last_screen = _screen_now;
     _screen_now = new_screen;
@@ -77,7 +66,7 @@ void VisMateClass::screen(Menu_screen_t new_screen){
 
     // main menu
     if(_last_screen == SETTING && _screen_now == HOME_SCREEN){
-        uint16_t angle = lcd.get_angle() - 24;
+        uint16_t angle = lcd.get_angle() - 20;
         for(int x = 240; x >= 0; x-=40){
             lcd.swipe(_last_screen, x-240, angle);
             lcd.swipe(_screen_now, x, angle);
@@ -87,7 +76,7 @@ void VisMateClass::screen(Menu_screen_t new_screen){
         debugVal(VIS_TAG, "1 From last screen : ", _last_screen);
     
     }   else if(_last_screen == HOME_SCREEN && _screen_now == SETTING){
-        uint16_t angle = lcd.get_angle() + 24;
+        uint16_t angle = lcd.get_angle() + 20;
         for(int x = 0; x <= 240; x+=40){
           lcd.swipe(_last_screen, x, angle);
           lcd.swipe(_screen_now, x-240, angle);
@@ -96,7 +85,7 @@ void VisMateClass::screen(Menu_screen_t new_screen){
         debugVal(VIS_TAG, "2 From last screen : ", _last_screen);
     
     }   else if(_last_screen < _screen_now && _screen_now <= 5){
-        uint16_t angle = lcd.get_angle() - 24;
+        uint16_t angle = lcd.get_angle() - 20;
         for(int x = 240; x >= 0; x-=40){
             lcd.swipe(_last_screen, x-240, angle);
             lcd.swipe(_screen_now, x, angle);
@@ -105,7 +94,7 @@ void VisMateClass::screen(Menu_screen_t new_screen){
         debugVal(VIS_TAG, "3 From last screen : ", _last_screen);
     
     }   else if(_last_screen > _screen_now && _screen_now <= 5 && _last_screen <=5){        
-        uint16_t angle = lcd.get_angle() + 24;
+        uint16_t angle = lcd.get_angle() + 20;
         for(int x = 0; x <= 240; x+=40){
             lcd.swipe(_last_screen, x, angle);
             lcd.swipe(_screen_now, x-240, angle);
@@ -116,7 +105,7 @@ void VisMateClass::screen(Menu_screen_t new_screen){
     
     // app
     }   else if(_screen_now > 5 && _last_screen < 5){
-        uint16_t angle = lcd.get_angle() - 24;
+        uint16_t angle = lcd.get_angle() - 20;
         for(int x = 240; x >= 0; x-=40){
             lcd.slide(_mode, x-240, angle);
             lcd.slide(_screen_now, x, angle);
@@ -127,7 +116,7 @@ void VisMateClass::screen(Menu_screen_t new_screen){
 
     }   else if(_screen_now > 5 && _last_screen > 5){
         if(_last_screen < _screen_now){
-            uint16_t angle = lcd.get_angle() - 24;
+            uint16_t angle = lcd.get_angle() - 20;
             for(int x = 240; x >= 0; x-=40){
                 lcd.slide(_last_screen, x-240, angle);
                 lcd.slide(_screen_now, x, angle);
@@ -137,7 +126,7 @@ void VisMateClass::screen(Menu_screen_t new_screen){
             debugVal(VIS_TAG, "8 Mode : ", _mode);
 
         }   else if(_last_screen > _screen_now){  
-            uint16_t angle = lcd.get_angle() + 24;      
+            uint16_t angle = lcd.get_angle() + 20;      
             for(int x = 0; x <= 240; x+=40){
                 lcd.slide(_last_screen, x, angle);
                 lcd.slide(_screen_now, x-240, angle);
@@ -147,7 +136,7 @@ void VisMateClass::screen(Menu_screen_t new_screen){
             debugVal(VIS_TAG, "7 Mode : ", _mode);
         }
     }   else if(_screen_now < 6 && _last_screen > 5){
-        uint16_t angle = lcd.get_angle() + 24;
+        uint16_t angle = lcd.get_angle() + 20;
         for(int x = 0; x <= 240; x+=40){
             lcd.slide(_last_screen, x, angle);
             lcd.slide(_screen_now, x-240, angle);
@@ -167,7 +156,7 @@ void VisMateClass::screen(Menu_screen_t new_screen){
         vismate_instances->talk(_screen_now);
     }
 }
-
+ */
 void VisMateClass::talk(Menu_screen_t screen_name){
     switch (screen_name) {
         case HOME_SCREEN:
@@ -235,6 +224,10 @@ Menu_screen_t VisMateClass::get_screen(){
 
 Menu_screen_t VisMateClass::get_last_screen(){
     return _last_screen;
+}
+
+void VisMateClass::setScreen(Menu_screen_t screen_name){
+    _screen_now = screen_name;
 }
 
 VisMateClass vismate;

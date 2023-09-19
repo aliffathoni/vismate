@@ -2,16 +2,16 @@
 #define RANGE_H_
 
 #include <Arduino.h>
-
+#include "Adafruit_VL53L0X.h"
 
 class ToFClass {
     private:
-        const int _sda = 8;
-        const int _scl = 9;
-
+        Adafruit_VL53L0X lox = Adafruit_VL53L0X();
+        
     public:
         ToFClass(void);
         void begin(void);
+        String get_range();
         int get_meter();
         int get_centi();
         int get_mili();
